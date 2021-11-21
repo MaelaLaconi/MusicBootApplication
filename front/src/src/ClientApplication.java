@@ -5,6 +5,7 @@ import src.mode.Musique;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -48,8 +49,24 @@ public class ClientApplication {
         http.disconnect();
 
     }
-    public void addMusic(Musique l){
 
+
+    public void addMusic(Musique m) throws IOException {
+        System.out.println(m.toJSON());
+        URL url = new URL("http://localhost:8080/Musiques");
+        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        http.setRequestMethod("POST");
+        http.setDoOutput(true);
+        http.setRequestProperty("Accept", "application/json");
+        http.setRequestProperty("Content-Type", "application/json");
+
+
+        byte[] out = m.toJSON().getBytes(StandardCharsets.UTF_8);
+
+        OutputStream stream = http.getOutputStream();
+        stream.write(out);
+        http.getResponseCode();
+        http.disconnect();
 
     }
 

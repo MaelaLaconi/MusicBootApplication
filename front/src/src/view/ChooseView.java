@@ -41,15 +41,13 @@ public class ChooseView {
         myPanel.add(ajouter);
         ajouter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e){
-                /*BigView b = new BigView("Ajouter un livre");
-
-                Livre livre2 = b.display(e);
-                //LivresResource livresResource = new LivresResource();
-                //livresResource.saveBookJSON(livre2);
-                application.callAjouter(livre2);
-                setText(livre2.toString());
-                frame.setVisible(false);
-                frame.setVisible(true);*/
+                try {
+                    ParamSelector paramSelector = new ParamSelector("Renseignements sur la musique à créer");
+                    Musique musique = paramSelector.display();
+                    application.addMusic(musique);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
 
             }
         });
