@@ -51,6 +51,11 @@ public class Musique {
                 ", id=" + id;
     }
 
+
+    public String toJSON(){
+        return "{\"id\": "+id + ", \"titre\": \""+titre+"\", \"chanteur\": \""+ chanteur+"\"}";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

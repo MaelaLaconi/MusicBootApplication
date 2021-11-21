@@ -86,7 +86,13 @@ public class ChooseView {
         myPanel.add(modif);
         modif.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e){
-
+                try {
+                    ParamSelector paramSelector = new ParamSelector("Renseignements sur la musique à modifier");
+                    Musique musique = paramSelector.display();
+                    application.updateLivre(musique);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 SwingUtilities.updateComponentTreeUI(frame);
             }
         });
