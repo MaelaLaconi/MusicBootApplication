@@ -2,13 +2,13 @@ package src;
 
 import src.mode.Musique;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Random;
 
 public class ClientApplication {
 
@@ -16,12 +16,44 @@ public class ClientApplication {
     }
 
 
-    public String getABook(int id) throws IOException {
+    /**
+     *
+     * @param id
+     * @return cherche une musique par son id, retourne une string en json
+     * @throws IOException
+     */
+    public String getAMusic(int id) throws IOException {
+        StringBuilder res = new StringBuilder();
+        URL url = new URL("http://localhost:8080/Musiques/"+id);
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Content-Type", "application/json");
 
-        return "";
+        BufferedReader br = null;
+        if (conn.getResponseCode() == 200) {
+            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String strCurrentLine;
+            while ((strCurrentLine = br.readLine()) != null) {
+                res.append(strCurrentLine+"\n");
+            }
+        } else {
+            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            String strCurrentLine;
+            while ((strCurrentLine = br.readLine()) != null) {
+                res.append(strCurrentLine);
+            }
+        }
+        conn.disconnect();
+        return res.toString() ;
     }
 
-    // MARCHE
+    /**
+     * supprime une musique par son id
+     * @param id
+     * @throws IOException
+     */
     public void deleteMusic(int id) throws IOException {
         URL url = new URL("http://localhost:8080/Musiques/" + id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -29,10 +61,12 @@ public class ClientApplication {
         con.getResponseCode();
     }
 
-    // MARCHE
-    public void updateLivre(Musique m) throws IOException {
-
-        System.out.println(m.toJSON());
+    /**
+     * modifie une musique
+     * @param m
+     * @throws IOException
+     */
+    public void updateMusic(Musique m) throws IOException {
         URL url = new URL("http://localhost:8080/Musiques");
         HttpURLConnection http = (HttpURLConnection)url.openConnection();
         http.setRequestMethod("PUT");
@@ -50,9 +84,12 @@ public class ClientApplication {
 
     }
 
-
+    /**
+     * ajoute une musique
+     * @param m
+     * @throws IOException
+     */
     public void addMusic(Musique m) throws IOException {
-        System.out.println(m.toJSON());
         URL url = new URL("http://localhost:8080/Musiques");
         HttpURLConnection http = (HttpURLConnection)url.openConnection();
         http.setRequestMethod("POST");
@@ -69,7 +106,4 @@ public class ClientApplication {
         http.disconnect();
 
     }
-
-
-
 }

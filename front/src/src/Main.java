@@ -1,9 +1,6 @@
 package src;
 
 import src.view.ChooseView;
-import src.view.IdSelector;
-
-import java.awt.event.ActionEvent;
 
 public class Main {
 

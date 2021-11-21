@@ -14,7 +14,7 @@ public class IdSelector {
 
     public String display(ActionEvent e) {
         JPanel myPanel = new JPanel();
-        JTextField delete = new JTextField("Id");
+        JTextField delete = new JTextField("1");
         myPanel.add(new JLabel(label));
         myPanel.add(delete);
 
